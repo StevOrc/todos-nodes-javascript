@@ -1,1 +1,1 @@
-Developpement d'un bog avec NodeJS et Full JS frontend
+Developpement d'un bog avec fullstack, backend NodeJS et frontend Full JS. Utilisation de webpack, babel, scss.
