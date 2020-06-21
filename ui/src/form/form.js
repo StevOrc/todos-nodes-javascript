@@ -20,8 +20,9 @@ const formIsValid = (article) => {
     if(!article.author || !article.category || !article.content){
         errors.push("vous n'avez pas remplis touts les champs");
         if(errors.length > 1) errors.shift();
-    }
-    else errors = [];
+    } else{
+        errors = [];
+    } 
     if(errors.length){
         let errorHtml = errors.reduce( (acc, value) => {
             acc += `<li>${value}</li>`;
