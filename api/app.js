@@ -5,11 +5,17 @@ Joi.objectId = require('joi-objectid')(Joi);
 const debug = require('debug')('app:startup');
 const cors = require('cors');
 const config = require('config');
+const article = require('./routes/article.route');
 
+// Create app instance
 const app = express();
 
+// Use basic middlewares
 app.use(cors());
 app.use(express.json());
+
+// Use routes
+app.use('/api/articles', article);
 
 mongoose.connect(config.get('db'), {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
     .then( () => {
