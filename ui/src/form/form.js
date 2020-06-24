@@ -4,15 +4,30 @@ import './form.scss'
 const form = document.querySelector('form');
 const errorElement = document.querySelector("#errors");
 let errors = [];
+const baseUrl = 'http://localhost:3000/api/articles/';
 
-form.addEventListener('submit', event => {
+form.addEventListener('submit', async event => {
     event.preventDefault();
     // On passe à l'objet FormData le form
     const formData = new FormData(form);
     // Permet d'avoir un objet KEY - VALUE des différents champs, soit :  {author: '', category: '', content: ''}
     const article = Object.fromEntries(formData.entries());
     if(formIsValid(article)){
-        const json = JSON.stringify(artile);
+        const json = JSON.stringify(article);
+        try{
+            const response = await fetch(baseUrl, {
+                method: 'POST',
+                body: json,
+                headers: {
+                    'Content-Type':'application/json'
+                }
+            });
+
+            const body = await response.json();
+            console.log(body);
+        }catch(e) {
+            console.log("error : ", e);
+        }
     }
 });
 
@@ -29,8 +44,9 @@ const formIsValid = (article) => {
             return acc;
         }, '');
         errorElement.innerHTML = errorHtml;
+        return false;
     } else {
         errorElement.innerHTML = '';
+        return true;
     }
 }
-
