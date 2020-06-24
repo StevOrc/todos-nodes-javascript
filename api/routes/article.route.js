@@ -4,21 +4,21 @@ const {Article, validate} = require('../models/article.model');
 
 router.get('/', async (req, res) => {
     const articles = await Article.find();
-    if(!articles) res.status(404).send('No articles found in DB');
+    if(!articles) return res.status(404).send('No articles found in DB');
 
     res.status(200).send(articles);
 });
 
 router.get('/:id', async (req, res) => {
     const article = await Article.findById(req.params.id);
-    if(!article) res.status(404).send('No articles found in DB');
+    if(!article) return res.status(404).send('No articles found in DB');
 
     res.status(200).send(article);
 });
 
 router.post('/', async (req, res) => {
     const {error} = validate(req.body);
-    if(error) res.status(400).send(error.details[0].message);
+    if(error) return res.status(400).send(error.details[0].message);
     
     const {author, category, content} = req.body;
     let article = new Article({
@@ -30,7 +30,7 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
     const {error} = validate(req.body);
-    if(error) res.status(400).send(error.details[0].message);
+    if(error) return res.status(400).send(error.details[0].message)
 
     const {author, content, category} = req.body;
     let article = await Article.findByIdAndUpdate(req.params.id, {
@@ -42,8 +42,8 @@ router.put('/:id', async (req, res) => {
 });
 
 router.delete('/:id', async (req, res) => {
-    const article = Article.findByIdAndDelete(req.params.id, {useFindAndModify: false});
-    if(!article) res.status(404).send('No article found with the given ID...');
+    const article = await Article.findByIdAndDelete(req.params.id, {useFindAndModify: false});
+    if(!article) return res.status(404).send('No article found with the given ID...');
 
     res.status(200).send(article);
 });

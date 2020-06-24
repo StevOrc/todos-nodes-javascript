@@ -11,8 +11,8 @@ const article = require('./routes/article.route');
 const app = express();
 
 // Use basic middlewares
-app.use(cors());
 app.use(express.json());
+app.use(cors());
 
 // Use routes
 app.use('/api/articles', article);
