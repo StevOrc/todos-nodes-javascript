@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Joi = require('@hapi/joi');
-const { string } = require('@hapi/joi');
 
 const schema = new mongoose.Schema({
     author: {

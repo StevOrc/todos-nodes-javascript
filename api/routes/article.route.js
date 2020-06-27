@@ -1,15 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const {Article, validate} = require('../models/article.model');
+const error404NotFoundId = require('../utils/error404NotFoundId');
+const isValidObjectId = require('../middleware/isValidObjectId');
 
 router.get('/', async (req, res) => {
     const articles = await Article.find();
-    if(!articles) return res.status(404).send('No articles found in DB');
+    if(articles.length) return error404NotFoundId('Todo', res);
 
     res.status(200).send(articles);
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id',isValidObjectId, async (req, res) => {
     const article = await Article.findById(req.params.id);
     if(!article) return res.status(404).send('No articles found in DB');
 
@@ -28,7 +30,7 @@ router.post('/', async (req, res) => {
     res.status(200).send(article);
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', isValidObjectId, async (req, res) => {
     const {error} = validate(req.body);
     if(error) return res.status(400).send(error.details[0].message)
 
@@ -41,7 +43,7 @@ router.put('/:id', async (req, res) => {
     res.status(200).send(article);
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', isValidObjectId, async (req, res) => {
     const article = await Article.findByIdAndDelete(req.params.id, {useFindAndModify: false});
     if(!article) return res.status(404).send('No article found with the given ID...');
 
