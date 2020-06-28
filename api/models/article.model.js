@@ -19,6 +19,17 @@ const schema = new mongoose.Schema({
         required: true,
         minlength: 2,
         maxlength: 255
+    },
+    title: {
+        type: String,
+        required: true,
+        minlength: 5,
+        maxlength: 100
+    },
+    img: {
+        type: String,
+        required: true,
+        maxlength: 255
     }
 });
 
@@ -28,7 +39,9 @@ const validateArticle = (article) => {
     const schema = Joi.object({
         author: Joi.string().min(4).max(100).required(),
         category: Joi.string().min(4).max(100).required(),
-        content: Joi.string().min(4).max(255).required()
+        content: Joi.string().min(4).max(255).required(),
+        title: Joi.string().min(5).max(100).required(),
+        img: Joi.string().max(255).required()
     });
 
     return schema.validate(article);
