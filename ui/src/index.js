@@ -11,6 +11,8 @@ const createArticle = () => {
     });
     articleContainerElement.innerHTML = '';
     articleContainerElement.append(...articleNodes);
+    const deleteButtons = document.querySelectorAll('.btn-danger');
+    initDeleteButtonsEvent(deleteButtons);
 }
 
 const fetchAllArticles = async () => {
@@ -22,6 +24,24 @@ const fetchAllArticles = async () => {
     }catch(e){
         console.log(e);
     }
+}
+
+const initDeleteButtonsEvent = (buttons) => {
+    buttons.forEach( button => {
+        button.addEventListener('click', async event => {
+            try{
+                const target = event.target;
+                const articleId = target.dataset.id;
+                const response = await fetch(`${baseURL}/${articleId}`, {
+                    method: 'DELETE'
+                });
+                const body = await response.json();
+                fetchAllArticles();
+            }catch(e){
+                console.log(e);
+            }
+        })
+    })
 }
 
 const articleNode = (article) => {
